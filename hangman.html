@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WAF's Hangman</title>
+	<link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+	<div id="content">
+		<div class="hangman">
+			<img src="assets/img/hm0.jpg" />
+			<img src="assets/img/hm1.jpg" />
+			<img src="assets/img/hm2.jpg" />
+			<img src="assets/img/hm3.jpg" />
+			<img src="assets/img/hm4.jpg" />
+			<img src="assets/img/hm5.jpg" />
+			<img src="assets/img/hm6.jpg" />
+			<img src="assets/img/hm7.jpg" />
+		</div>
+		<div class="htitle">Hangman Game</div><br />
+		<br />
+		<br />
+		<table align="center" width="420px">
+			<tr>
+				<td width="155"><span id="errors"><img src="assets/img/hm0.jpg" /></span></td>
+				<td width="253"><span id="word_space"></span></td>
+			</tr>
+		</table>
+		<br />
+		<table align="center">
+			<tr>
+				<td id="A" class="letters"><a class="a" href="javascript:selectLetter('A');">A</a></td>
+				<td id="B" class="letters"><a class="a" href="javascript:selectLetter('B');">B</a></td>
+				<td id="C" class="letters"><a class="a" href="javascript:selectLetter('C');">C</a></td>
+				<td id="D" class="letters"><a class="a" href="javascript:selectLetter('D');">D</a></td>
+				<td id="E" class="letters"><a class="a" href="javascript:selectLetter('E');">E</a></td>
+				<td id="F" class="letters"><a class="a" href="javascript:selectLetter('F');">F</a></td>
+				<td id="G" class="letters"><a class="a" href="javascript:selectLetter('G');">G</a></td>
+				<td id="H" class="letters"><a class="a" href="javascript:selectLetter('H');">H</a></td>
+				<td id="I" class="letters"><a class="a" href="javascript:selectLetter('I');">I</a></td>
+				<td id="J" class="letters"><a class="a" href="javascript:selectLetter('J');">J</a></td>
+				<td id="K" class="letters"><a class="a" href="javascript:selectLetter('K');">K</a></td>
+				<td id="L" class="letters"><a class="a" href="javascript:selectLetter('L');">L</a></td>
+				<td id="M" class="letters"><a class="a" href="javascript:selectLetter('M');">M</a></td>
+			</tr>
+			<tr>
+				<td id="N" class="letters"><a class="a" href="javascript:selectLetter('N');">N</a></td>
+				<td id="O" class="letters"><a class="a" href="javascript:selectLetter('O');">O</a></td>
+				<td id="P" class="letters"><a class="a" href="javascript:selectLetter('P');">P</a></td>
+				<td id="Q" class="letters"><a class="a" href="javascript:selectLetter('Q');">Q</a></td>
+				<td id="R" class="letters"><a class="a" href="javascript:selectLetter('R');">R</a></td>
+				<td id="S" class="letters"><a class="a" href="javascript:selectLetter('S');">S</a></td>
+				<td id="T" class="letters"><a class="a" href="javascript:selectLetter('T');">T</a></td>
+				<td id="U" class="letters"><a class="a" href="javascript:selectLetter('U');">U</a></td>
+				<td id="V" class="letters"><a class="a" href="javascript:selectLetter('V');">V</a></td>
+				<td id="W" class="letters"><a class="a" href="javascript:selectLetter('W');">W</a></td>
+				<td id="X" class="letters"><a class="a" href="javascript:selectLetter('X');">X</a></td>
+				<td id="Y" class="letters"><a class="a" href="javascript:selectLetter('Y');">Y</a></td>
+				<td id="Z" class="letters"><a class="a" href="javascript:selectLetter('Z');">Z</a></td>
+			</tr>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		var words = new Array("JAVASCRIPT", "FRAMEWORK", "SLACK", "GITHUB", "HEROKU", "FIREFOX", "SUBLIMETEXT", "BOOTSTRAP", "BOOTCAMP", "NODEJS", "LARAVEL", "MONGODB", "REACTJS", "BROWSER", "CHROME", "HANGMAN", "DEVELOPER", "FULLSTACK", "BACKEND", "FRONTEND");
+		var word = '';
+		var x;
+		var spaces = '_';
+		var hm_cont = 0;
+		var correct_cont = 0;
+		var wrong_letters = '#';
+
+		chooseWord();
+
+		function chooseWord() {
+			var word_space = document.getElementById("word_space");
+			x = Math.floor(Math.random() * words.length);
+			if (x < 0 || x >= words.length) {
+				chooseWord();
+			} else {
+				word = words[x];
+				for (_i = 2; _i <= word.length; _i++) {
+					spaces = spaces + ' _';
+				}
+				word_space.innerHTML = spaces;
+			}
+		}
+
+		function selectLetter(letter) {
+			var word_space = document.getElementById("word_space");
+			var errors = document.getElementById("errors");
+			var _letter = document.getElementById(letter);
+			var wletter = word.split("");
+			var spaWord = word_space.innerHTML.split(" ");
+			var aux = '';
+
+			if ((('#' + word).search(letter) !== -1) && (wrong_letters.search(letter) === -1)) {
+				for (_i = 0; _i <= word.length - 1; _i++) {
+					if (wletter[_i] === letter) {
+						spaWord[_i] = letter;
+					}
+				}
+				for (_i = 0; _i <= spaWord.length - 1; _i++) {
+					if (_i >= spaWord.length - 1) {
+						aux = aux + spaWord[_i];
+					} else {
+						aux = aux + spaWord[_i] + " ";
+					}
+				}
+				correct_cont++;
+				_letter.style.backgroundColor = '#CCCCCC';
+				word_space.innerHTML = aux;
+			} else {
+				if (wrong_letters.search(letter) === -1) {
+					wrong_letters = wrong_letters + letter;
+					_letter.style.backgroundColor = '#CCCCCC';
+					hm_cont++;
+					errors.innerHTML = '<img src="assets/img/hm' + hm_cont + '.jpg" />';
+				}
+			}
+			if (('#' + document.getElementById("word_space").innerHTML).search('_') === -1) {
+				errors.innerHTML = '<img src="assets/img/hm7.jpg" />';
+				alert('Congrats! You will live one more day!\nN# of wrong letters: ' + hm_cont + '\nN# of right letters: ' + correct_cont);
+			}
+			if (hm_cont >= 6) {
+				errors.innerHTML = '<img src="assets/img/hm6.jpg" />';
+				alert('Sorry, you DIED!');
+			}
+		}
+	</script>
+</body>
+</html>
